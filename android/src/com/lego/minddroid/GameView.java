@@ -446,8 +446,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		 * down if it's already running. Calling start() after this was most
 		 * recently called with false will result in an immediate shutdown.
 		 * 
-		 * @param b
-		 *            true to run, false to shut down
+		 * @param b true to run, false to shut down
 		 */
 		public void setRunning(boolean b) {
 			mRun = b;
@@ -455,60 +454,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		public void doMotorMovement(float pitch, float roll) {
 			
-		
-			int left=0;
-			int right=0;
-			// only when phone is little bit tilted
-			if ((Math.abs(pitch) > 10.0) || (Math.abs(roll) > 10.0)) {
-
-				// limit pitch and roll
-				if (pitch > 33.3){
-					pitch = (float) 33.3;
-				}else if (pitch < -33.3){
-					pitch = (float) -33.3;}
-
-				if (roll > 33.3){
-					roll = (float) 33.3;
-				}else if (roll < -33.3){
-					roll = (float) -33.3;
-				}
-
-				// when pitch is very small then do a special turning function    
-				if (Math.abs(pitch) > 10.0) {
-					left = (int) Math.round(3.3 * pitch * (1.0 + roll / 60.0));
-					right = (int) Math.round(3.3 * pitch * (1.0 - roll / 60.0));
-				} else {
-					left = (int) Math.round(3.3 * roll - Math.signum(roll) * 3.3 * Math.abs(pitch));
-					right = -left;
-				}
-								
-				// limit the motor outputs
-				if (left > 100)
-					left = 100;
-				else if (left < -100)
-					left = -100;
-
-				if (right > 100)
-					right = 100;
-				else if (right < -100)
-					right = -100;
-				
-                // Reverse the motors when driving back at the shooterbot and the NXJ model				
-				if (pitch < -10 && 
-                    (mActivity.mRobotType==R.id.robot_type_shooterbot || 
-                    mActivity.mRobotType==R.id.robot_type_lejos)) {
-					
-					int back_left=right;
-					int back_right=left;
-					
-					left=back_left;
-					right=back_right;
-					
-				}
-
-			}
-			
-			mActivity.updateMotorControl(left, right);
+			mActivity.robotType.updateMotorControl(pitch, roll);
 		}
 		
 		/**

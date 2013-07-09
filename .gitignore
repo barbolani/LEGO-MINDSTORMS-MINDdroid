@@ -2,4 +2,7 @@
 *.nxj
 bin/
 gen/
+# Local configuration file (sdk, path, etc) (ekux44 suggestion)
+local.properties
+# KDE Dolphin browser configuration
 .directory
