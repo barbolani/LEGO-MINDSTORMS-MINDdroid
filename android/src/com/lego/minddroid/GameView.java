@@ -31,7 +31,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -537,8 +536,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		@Override
 		public void onSensorChanged(SensorEvent event) {
 
-			mAccelX = 0 - event.values[0];
-			mAccelY = 0 - event.values[1];
+			mAccelX = event.values[1];
+			mAccelY = 0 - event.values[2];
 
 		}
 
