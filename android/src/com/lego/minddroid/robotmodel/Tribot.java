@@ -14,9 +14,9 @@ import com.lego.minddroid.BTCommunicator;
 public class Tribot extends MotorPerWheelRobot {
 	
 	public Tribot() {
-		motorLeft = BTCommunicator.MOTOR_B;
+		motorLeftID = BTCommunicator.MOTOR_B;
         directionLeft = 1;
-        motorRight = BTCommunicator.MOTOR_C;
+        motorRightID = BTCommunicator.MOTOR_C;
         directionRight = 1;
         motorAction = BTCommunicator.MOTOR_A;
         directionAction = 1;

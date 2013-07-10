@@ -308,11 +308,16 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
             selectNXT();
         }
     }
-
+    
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         destroyBTCommunicator();
+        // Avoids leaking the TTS service
+        if( mTts != null ) {
+        	mTts.stop();
+        	mTts.shutdown();
+        }
+        super.onDestroy();
     }
 
     @Override

@@ -16,9 +16,9 @@ import com.lego.minddroid.BTCommunicator;
  */
 public class MotorPerWheelRobot extends RobotModel {
 
-	protected int motorLeft;
+	protected int motorLeftID;
 	protected int directionLeft; // +/- 1
-	protected int motorRight;
+	protected int motorRightID;
 	protected int directionRight; // +/- 1
 	protected int motorAction;
 	protected int directionAction; // +/- 1
@@ -33,9 +33,9 @@ public class MotorPerWheelRobot extends RobotModel {
 	 */
 	public MotorPerWheelRobot() {
 		
-		motorLeft = BTCommunicator.MOTOR_B;
+		motorLeftID = BTCommunicator.MOTOR_B;
         directionLeft = 1;
-        motorRight = BTCommunicator.MOTOR_C;
+        motorRightID = BTCommunicator.MOTOR_C;
         directionRight = 1;
         motorAction = BTCommunicator.MOTOR_A;
         directionAction = 1;
@@ -126,8 +126,8 @@ public class MotorPerWheelRobot extends RobotModel {
                 stopAlreadySent = false;         
                         
             // send messages via the handler
-            sendBTCmessage(BTCommunicator.NO_DELAY, motorLeft, leftMotor * directionLeft, 0);
-            sendBTCmessage(BTCommunicator.NO_DELAY, motorRight, rightMotor * directionRight, 0);
+            sendBTCmessage(BTCommunicator.NO_DELAY, motorLeftID, leftMotor * directionLeft, 0);
+            sendBTCmessage(BTCommunicator.NO_DELAY, motorRightID, rightMotor * directionRight, 0);
         }
     }
 

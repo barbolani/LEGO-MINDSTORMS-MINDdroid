@@ -44,8 +44,12 @@
 			
         <RadioButton android:id="@+id/robot_type_lejos" android:text="@string/robot_type_lejos"
             android:drawableBottom="@drawable/nxj"  android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:scaleType="centerCrop" android:drawablePadding="1dp"/>
+            android:layout_height="wrap_content" android:scaleType="centerCrop" android:drawablePadding="1dp" android:paddingBottom="8dp"/>
 
-	</RadioGroup>
+        <RadioButton android:id="@+id/robot_type_rccarbot" android:text="@string/robot_type_rccarbot"
+            android:drawableBottom="@drawable/rccarbot"  android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:scaleType="centerCrop" android:drawablePadding="1dp" android:paddingBottom="8dp"/>
+        
+    </RadioGroup>
 </LinearLayout>
 </ScrollView>

@@ -3,6 +3,7 @@ package com.lego.minddroid;
 import android.util.SparseArray;
 
 import com.lego.minddroid.robotmodel.LejOS;
+import com.lego.minddroid.robotmodel.RCCarBot;
 import com.lego.minddroid.robotmodel.RoboGator;
 import com.lego.minddroid.robotmodel.RobotModel;
 import com.lego.minddroid.robotmodel.ShooterBot;
@@ -17,6 +18,7 @@ public final class RobotModelMap {
 		typeMap.put( R.id.robot_type_robogator, new RoboGator() );
 		typeMap.put( R.id.robot_type_shooterbot, new ShooterBot() );
 		typeMap.put( R.id.robot_type_tribot, new Tribot() );
+		typeMap.put( R.id.robot_type_rccarbot, new RCCarBot() );
 	}
 	
 	static RobotModel get(int robotId ) {

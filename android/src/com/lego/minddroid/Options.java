@@ -48,6 +48,8 @@ public class Options {
             (RadioButton) mDialog.findViewById(R.id.robot_type_robogator);
 		final RadioButton robotTypeLejos = 
             (RadioButton) mDialog.findViewById(R.id.robot_type_lejos);
+		final RadioButton robotTypeRCCarbot = 
+	            (RadioButton) mDialog.findViewById(R.id.robot_type_rccarbot);
 		
 		switch (splashMenu.getRobotType()) {
 
@@ -62,6 +64,10 @@ public class Options {
 			case R.id.robot_type_lejos:
 				robotTypeLejos.setChecked(true);
 				break;
+				
+			case R.id.robot_type_rccarbot:
+				robotTypeRCCarbot.setChecked(true);
+				break ;
 
 			default:
 				robotTypeShooterbot.setChecked(true);
@@ -72,6 +78,7 @@ public class Options {
 		robotTypeTribot.setOnClickListener(radio_listener);
 		robotTypeRobogator.setOnClickListener(radio_listener);
 		robotTypeLejos.setOnClickListener(radio_listener);
+		robotTypeRCCarbot.setOnClickListener(radio_listener);
 	}
 
 	public void show() {

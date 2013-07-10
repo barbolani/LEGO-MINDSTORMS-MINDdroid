@@ -249,5 +249,6 @@
     <string name="robot_type_tribot">Tribot</string>
     <string name="robot_type_robogator">Robogator</string>
     <string name="robot_type_lejos">leJOS NXJ model</string>
-            
+    <string name="robot_type_rccarbot">RCCarbot</string>
+    
 </resources>

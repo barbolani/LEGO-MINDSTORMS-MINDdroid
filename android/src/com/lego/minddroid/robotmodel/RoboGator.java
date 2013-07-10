@@ -18,9 +18,9 @@ public class RoboGator extends MotorPerWheelRobot {
 	 *   Action Motor : A
 	 */
 	public RoboGator() {
-		motorLeft = BTCommunicator.MOTOR_C;
+		motorLeftID = BTCommunicator.MOTOR_C;
         directionLeft = -1;
-        motorRight = BTCommunicator.MOTOR_B;
+        motorRightID = BTCommunicator.MOTOR_B;
         directionRight = -1;
         motorAction = BTCommunicator.MOTOR_A;
         directionAction = 1;
