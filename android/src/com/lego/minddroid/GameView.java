@@ -32,8 +32,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -163,7 +161,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	    private float yY1 = 0;
 	    public boolean longPressCancel;
 		
-		public GameThread(SurfaceHolder surfaceHolder, Context context, Vibrator vibrator, Handler handler) {
+		public GameThread(SurfaceHolder surfaceHolder, Context context, Vibrator vibrator ) {
 			// get handles to some important objects
 			mHapticFeedback = vibrator;
 			mSurfaceHolder = surfaceHolder;
@@ -321,40 +319,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 
-		/**
-		 * Pauses the animation.
-		 */
-		public void pause() {
-			thread.setRunning(false);
-			synchronized (mSurfaceHolder) {
-
-			}
-			boolean retry = true;
-			getThread().setRunning(false);
-			while (retry) {
-				try {
-					getThread().join();
-					retry = false;
-				} catch (InterruptedException e) {
-				}
-			}
-			
-		}
-
-		/**
-		 * Restores game state from the indicated Bundle. Typically called when
-		 * the Activity is being restored after having been previously
-		 * destroyed.
-		 * 
-		 * @param savedState
-		 *            Bundle containing the game state
-		 */
-		public synchronized void restoreState(Bundle savedState) {
-			synchronized (mSurfaceHolder) {
-
-			}
-		}
-
 		@Override
 		public void run() {
 		    
@@ -426,21 +390,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		/**
-		 * Dump game state to the provided Bundle. Typically called when the
-		 * Activity is being suspended.
-		 * 
-		 * @return Bundle with this view's state
-		 */
-		public Bundle saveState(Bundle map) {
-			synchronized (mSurfaceHolder) {
-				if (map != null) {
-
-				}
-			}
-			return map;
-		}
-
-		/**
 		 * Used to signal the thread whether it should be running or not.
 		 * Passing true allows the thread to run; passing false will shut it
 		 * down if it's already running. Calling start() after this was most
@@ -457,36 +406,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			mActivity.robotType.updateMotorControl(pitch, roll);
 		}
 		
-		/**
-		 * Sets the game mode. That is, whether we are running, paused, etc.
-		 * 
-		 * @see #setState(int, CharSequence)
-		 * @param mode
-		 *            one of the STATE_* constants
-		 */
-		public void setState(int mode) {
-			synchronized (mSurfaceHolder) {
-				setState(mode, null);
-			}
-		}
-
-		/**
-		 * Sets the game mode. That is, whether we are running, paused, in the
-		 * failure state, in the victory state, etc.
-		 * 
-		 * @param mode
-		 *            one of the STATE
-		 * @param message
-		 *            string to add to screen or null
-		 */
-		public void setState(int mode, CharSequence message) {
-
-			synchronized (mSurfaceHolder) {
-
-			}
-
-		}
-
 		/* Callback invoked when the surface dimensions change. */
 		public void setSurfaceSize(int width, int height) {
 			// synchronized to make sure these all change atomically
@@ -592,7 +511,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	/** used for logging */
-	private static final String TAG = GameView.class.getName();;
+	private static final String TAG = GameView.class.getName();
 
 	private MINDdroid mActivity;
 
@@ -618,7 +537,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		@Override
 		public void onSensorChanged(SensorEvent event) {
 
-			mAccelX = 0 - event.values[2];
+			mAccelX = 0 - event.values[0];
 			mAccelY = 0 - event.values[1];
 
 		}
@@ -636,12 +555,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		holder.addCallback(this);
 		  this.context=context;
 		// create thread only; it's started in surfaceCreated()
-		thread = new GameThread(holder, context, (Vibrator) uiActivity.getSystemService(Context.VIBRATOR_SERVICE), new Handler() {
-			@Override
-			public void handleMessage(Message m) {
-
-			}
-		});
+		thread = new GameThread(holder, context, (Vibrator) uiActivity.getSystemService(Context.VIBRATOR_SERVICE));
 
 		setFocusable(true); // make sure we get key events
 	}
@@ -702,12 +616,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	 
 			getThread().start();
 		} else{
-			thread = new GameThread(holder, context , (Vibrator) mActivity.getSystemService(Context.VIBRATOR_SERVICE), new Handler() {
-				@Override
-				public void handleMessage(Message m) {
-
-				}
-			});
+			thread = new GameThread(holder, context , (Vibrator) mActivity.getSystemService(Context.VIBRATOR_SERVICE));
 		
 			getThread().setRunning(true);
 			getThread().start();
