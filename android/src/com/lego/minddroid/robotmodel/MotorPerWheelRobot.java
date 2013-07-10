@@ -71,6 +71,8 @@ public class MotorPerWheelRobot extends RobotModel {
 	 */
 	public void calcMotorMovement(float pitch, float roll) {
 		
+		leftMotor = 0 ;
+		rightMotor = 0 ;
 		// only when phone is little bit tilted
 		if ((Math.abs(pitch) > 10.0) || (Math.abs(roll) > 10.0)) {
 
