@@ -1,17 +1,19 @@
 package com.lego.minddroid.robotmodel;
 
 import com.lego.minddroid.BTCommunicator;
-
+/**
+ * Class for driving the RCCarBot.
+ *  
+ * @author barbolani@gmail.com
+ *
+ */
 public class RCCarBot extends RobotModel {
 	/**
-	 * Class for driving the RCCarBot.
-	 *  
-	 * @author barbolani@gmail.com
-	 *
+	 * Stops drive motor and resets steering wheel on action
+	 * @param buttonMode ignored
 	 */
 	@Override
 	public void performAction(int buttonMode) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -21,8 +23,8 @@ public class RCCarBot extends RobotModel {
 	public void updateMotorControl(float pitch, float roll) {
 		
         if (commsHandler != null) {
-    		int power = (int)(100*pitch) ;
-    		int steering = (int)(100*roll) ;
+    		int power = (int)(pitch) ;
+    		int steering = (int)(roll) ;
             // don't send motor stop twice
             if ((power == 0) && (steering == 0)) {
                 if (stopAlreadySent)

@@ -482,9 +482,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                         builder.create().show();
                     }
 
-                    break;
-
-                case BTCommunicator.FIRMWARE_VERSION:
+                                   case BTCommunicator.FIRMWARE_VERSION:
 
                     if (myBTCommunicator != null) {
                         byte[] firmwareMessage = myBTCommunicator.getReturnMessage();
