@@ -498,6 +498,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                         }
                         if (isLejosMindDroid) {
                         	robotType = RobotModelMap.get(R.id.robot_type_lejos);
+                        	robotType.setHandlers(btcHandler, myHandler);
                         }
                         // afterwards we search for all files on the robot
                         robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.FIND_FILES, 0, 0);
