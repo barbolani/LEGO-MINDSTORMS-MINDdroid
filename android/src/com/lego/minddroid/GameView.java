@@ -339,6 +339,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 					//is it time to update motor movement?
 					if (mElapsedSinceNXTCommand > MINDdroid.UPDATE_TIME) {
+						mElapsedSinceNXTCommand = 0 ;
 						//calculate and send command to move motors							
 						doMotorMovement(-mNumAcY, -mNumAcX);
 					}
