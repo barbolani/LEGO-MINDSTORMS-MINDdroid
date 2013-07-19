@@ -52,7 +52,7 @@ import android.widget.Toast;
  */
 public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.OnInitListener {
 
-    public static final int UPDATE_TIME = 200;
+    public static final int UPDATE_TIME = 100;
     public static final int MENU_TOGGLE_CONNECT = Menu.FIRST;
     public static final int MENU_START_SW = Menu.FIRST + 1;
     public static final int MENU_QUIT = Menu.FIRST + 2;
@@ -72,7 +72,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
     private boolean btErrorPending = false;
     private boolean pairing;
     private static boolean btOnByUs = false;
-    RobotModel robotType ;
+    RobotModel robotModel ;
     private List<String> programList;
     private static final int MAX_PROGRAMS = 20;
     private String programToStart;
@@ -118,7 +118,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
         thisActivity = this;
         int type = this.getIntent().getIntExtra(SplashMenu.MINDDROID_ROBOT_TYPE, 
                 R.id.robot_type_shooterbot);
-        robotType = RobotModelMap.get(type);
+        robotModel = RobotModelMap.get(type);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         StartSound mySound = new StartSound(this);
@@ -162,7 +162,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
         // interestingly BT adapter needs to be obtained by the UI thread - so we pass it in in the constructor
         myBTCommunicator = new BTCommunicator(this, myHandler, BluetoothAdapter.getDefaultAdapter(), getResources());
         btcHandler = myBTCommunicator.getHandler();
-        robotType.setHandlers(btcHandler, myHandler);
+        robotModel.setHandlers(btcHandler, myHandler);
     }
 
     /**
@@ -191,7 +191,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
     public void destroyBTCommunicator() {
 
         if (myBTCommunicator != null) {
-            robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.DISCONNECT, 0, 0);
+            robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.DISCONNECT, 0, 0);
             myBTCommunicator = null;
         }
 
@@ -213,7 +213,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
      */
     private void performActionCommand(int buttonMode) {
     	
-    	robotType.performAction(buttonMode) ;
+    	robotModel.performAction(buttonMode) ;
         
     }
 
@@ -247,19 +247,19 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
         // is handled in startRXEprogram()
         if (name.endsWith(".rxe")) {
             programToStart = name;        
-            robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.GET_PROGRAM_NAME, 0, 0);
+            robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.GET_PROGRAM_NAME, 0, 0);
             return;
         }
               
         // for .nxj programs: stop bluetooth communication after starting the program
         if (name.endsWith(".nxj")) {
-        	robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.START_PROGRAM, name);
+        	robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.START_PROGRAM, name);
             destroyBTCommunicator();
             return;
         }        
 
         // for all other programs: just start the program
-        robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.START_PROGRAM, name);
+        robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.START_PROGRAM, name);
     }
 
     /**
@@ -268,11 +268,11 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
      */   
     public void startRXEprogram(byte status) {
         if (status == 0x00) {
-            robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.STOP_PROGRAM, 0, 0);
-            robotType.sendBTCmessage(1000, BTCommunicator.START_PROGRAM, programToStart);
+            robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.STOP_PROGRAM, 0, 0);
+            robotModel.sendBTCmessage(1000, BTCommunicator.START_PROGRAM, programToStart);
         }    
         else {
-            robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.START_PROGRAM, programToStart);
+            robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.START_PROGRAM, programToStart);
         }
     }        
 
@@ -387,7 +387,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                 }
                 
                 FileDialog myFileDialog = new FileDialog(this, programList);    		    	    		
-                myFileDialog.show(robotType.accepstFiles());
+                myFileDialog.show(robotModel.accepstFiles());
                 return true;
                 
             case MENU_QUIT:
@@ -441,7 +441,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                     programList = new ArrayList<String>();
                     connectingProgressDialog.dismiss();
                     updateButtonsAndMenu();
-                    robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.GET_FIRMWARE_VERSION, 0, 0);
+                    robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.GET_FIRMWARE_VERSION, 0, 0);
                     break;
                 case BTCommunicator.MOTOR_STATE:
 
@@ -482,7 +482,7 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                         builder.create().show();
                     }
 
-                                   case BTCommunicator.FIRMWARE_VERSION:
+                case BTCommunicator.FIRMWARE_VERSION:
 
                     if (myBTCommunicator != null) {
                         byte[] firmwareMessage = myBTCommunicator.getReturnMessage();
@@ -495,11 +495,11 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                             }
                         }
                         if (isLejosMindDroid) {
-                        	robotType = RobotModelMap.get(R.id.robot_type_lejos);
-                        	robotType.setHandlers(btcHandler, myHandler);
+                        	robotModel = RobotModelMap.get(R.id.robot_type_lejos);
+                        	robotModel.setHandlers(btcHandler, myHandler);
                         }
                         // afterwards we search for all files on the robot
-                        robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.FIND_FILES, 0, 0);
+                        robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.FIND_FILES, 0, 0);
                     }
 
                     break;
@@ -511,14 +511,14 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
                         String fileName = new String(fileMessage, 4, 20);
                         fileName = fileName.replaceAll("\0","");
 
-                        if (robotType.accepstFiles() || fileName.endsWith(".nxj") || fileName.endsWith(".rxe")) {
+                        if (robotModel.accepstFiles() || fileName.endsWith(".nxj") || fileName.endsWith(".rxe")) {
                             programList.add(fileName);
                         }
 
                         // find next entry with appropriate handle, 
                         // limit number of programs (in case of error (endless loop))
                         if (programList.size() <= MAX_PROGRAMS)
-                            robotType.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.FIND_FILES,
+                            robotModel.sendBTCmessage(BTCommunicator.NO_DELAY, BTCommunicator.FIND_FILES,
                                            1, byteToInt(fileMessage[3]));
                     }
 
@@ -660,12 +660,12 @@ public class MINDdroid extends Activity implements BTConnectable, TextToSpeech.O
             if (result == TextToSpeech.LANG_MISSING_DATA ||
                 result == TextToSpeech.LANG_NOT_SUPPORTED) {            
                 // Language data is missing or the language is not supported.
-                if (robotType instanceof LejOS)
+                if (robotModel instanceof LejOS)
                     showToast(R.string.tts_language_not_supported, Toast.LENGTH_LONG);
             } 
         } else {
             // Initialization failed.
-            if (robotType instanceof LejOS )
+            if (robotModel instanceof LejOS )
                 showToast(R.string.tts_initialization_failure, Toast.LENGTH_LONG);
         }
     }

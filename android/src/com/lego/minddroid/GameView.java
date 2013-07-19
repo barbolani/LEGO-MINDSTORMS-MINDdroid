@@ -403,7 +403,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		public void doMotorMovement(float pitch, float roll) {
 			
-			mActivity.robotType.updateMotorControl(pitch, roll);
+			mActivity.robotModel.updateMotorControl(pitch, roll);
 		}
 		
 		/* Callback invoked when the surface dimensions change. */
@@ -538,7 +538,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		public void onSensorChanged(SensorEvent event) {
 
 			mAccelX = event.values[1];
-			mAccelY = 0 - event.values[2];
+			mAccelY = -event.values[2];
 
 		}
 
