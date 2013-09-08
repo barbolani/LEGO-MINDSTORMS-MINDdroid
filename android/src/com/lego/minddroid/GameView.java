@@ -116,12 +116,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		//private long mFeedbackEnd = 0;
 
 		/**
-		 * track how long since we redrew screen
+		 * track how long since we redraw screen
 		 */
 		long mElapsedSinceDraw = 0;
 
 		/**
-		 * track how long since we redrew screen
+		 * track how long since we redraw screen
 		 */
 		long mElapsedSinceNXTCommand = 0;
 
